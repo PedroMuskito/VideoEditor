@@ -8,26 +8,29 @@
     <link rel="stylesheet" href="TemplateData/style.css">
 <script>
     function UploadFile(gameObjectName, methodName, filter, multiple) {
-    let input = document.createElement('input');
-    input.type = 'file';
-    input.accept = filter;
-    input.multiple = multiple;
+        let input = document.createElement('input');
+        input.type = 'file';
+        input.accept = filter;
+        input.multiple = multiple;
 
-    input.onchange = e => {
-        let file = e.target.files[0];
-        let reader = new FileReader();
+        input.onchange = () => {
+            const file = input.files[0];
+            if (!file) return;
 
-        reader.onload = () => {
-            // Envia o base64 completo (inclui cabeçalho data:image/...)
-            SendMessage(gameObjectName, methodName, reader.result);
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                SendMessage(gameObjectName, methodName, reader.result);
+            };
+
+            reader.readAsDataURL(file);
         };
 
-        reader.readAsDataURL(file);
-    };
-
-    input.click();
-}
+        input.value = ''; // limpa antes do click
+        input.click();
+    }
 </script>
+
 
   </head>
   <body>
