@@ -6,6 +6,35 @@
     <title>Unity WebGL Player | U_CardViewer</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+
+    <script>
+  function UploadFile(gameObjectName, methodName, filter, multiple) {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.accept = filter;
+    input.multiple = multiple;
+
+    input.onchange = () => {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const base64 = reader.result;
+          SendMessage(gameObjectName, methodName, base64);
+        } catch (e) {
+          alert("Erro ao enviar imagem: " + e.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    };
+
+    input.click();
+  }
+</script>
+
+
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
