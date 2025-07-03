@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player | U_CardViewer</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+
     <script>
-    function UploadFile(gameObjectName, methodName, filter, multiple) {
-        let input = document.createElement('input');
-        input.type = 'file';
-        input.accept = filter;
-        input.multiple = multiple;
+        // Este botão será ativado por toque real
+        window.openFileForUnity = function (gameObject, methodName, filter = ".png,.jpg,.jpeg") {
+            let input = document.createElement('input');
+            input.type = 'file';
+            input.accept = filter;
+            input.style.display = 'none';
 
-        input.onchange = e => {
-            let file = e.target.files[0];
-            let reader = new FileReader();
-            reader.onload = () => {
-                SendMessage("ImageLoader", "OnFileUploaded", reader.result);
+            input.onchange = e => {
+                let file = e.target.files[0];
+                let reader = new FileReader();
+
+                reader.onload = () => {
+                    SendMessage(gameObject, methodName, reader.result);
+                };
+
+                reader.readAsDataURL(file);
             };
-            reader.readAsDataURL(file);
+
+            document.body.appendChild(input);
+            input.click(); // Só funciona se esse script for ativado por toque real
+            document.body.removeChild(input);
         };
-
-        input.click();
-    }
-</script>
-
-  </head>
+    </script>
+</head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1920 height=1080 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=800 height=600 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -123,8 +128,8 @@
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
-        canvas.style.width = "1920px";
-        canvas.style.height = "1080px";
+        canvas.style.width = "800px";
+        canvas.style.height = "600px";
       }
 
       loadingBar.style.display = "block";
