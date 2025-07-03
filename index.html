@@ -8,28 +8,26 @@
     <link rel="stylesheet" href="TemplateData/style.css">
 
     <script>
-        // Este botão será ativado por toque real
-        window.openFileForUnity = function (gameObject, methodName, filter = ".png,.jpg,.jpeg") {
-            let input = document.createElement('input');
-            input.type = 'file';
-            input.accept = filter;
-            input.style.display = 'none';
+        function UploadFile(gameObjectName, methodName, filter, multiple) {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.accept = filter;
+    input.multiple = multiple;
 
-            input.onchange = e => {
-                let file = e.target.files[0];
-                let reader = new FileReader();
+    input.onchange = e => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
 
-                reader.onload = () => {
-                    SendMessage(gameObject, methodName, reader.result);
-                };
+       reader.onload = () => {
+    SendMessage("ImageLoader", "OnFileUploaded", reader.result);
+};
+reader.readAsDataURL(file);
 
-                reader.readAsDataURL(file);
-            };
+        reader.readAsDataURL(file);
+    };
 
-            document.body.appendChild(input);
-            input.click(); // Só funciona se esse script for ativado por toque real
-            document.body.removeChild(input);
-        };
+    input.click();
+}
     </script>
 </head>
   <body>
