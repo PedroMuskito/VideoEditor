@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player | U_CardViewer</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-
-    <script>
-        function UploadFile(gameObjectName, methodName, filter, multiple) {
+<script>
+    function UploadFile(gameObjectName, methodName, filter, multiple) {
     let input = document.createElement('input');
     input.type = 'file';
     input.accept = filter;
@@ -18,18 +17,19 @@
         let file = e.target.files[0];
         let reader = new FileReader();
 
-       reader.onload = () => {
-    SendMessage("ImageLoader", "OnFileUploaded", reader.result);
-};
-reader.readAsDataURL(file);
+        reader.onload = () => {
+            // Envia o base64 completo (inclui cabeçalho data:image/...)
+            SendMessage(gameObjectName, methodName, reader.result);
+        };
 
         reader.readAsDataURL(file);
     };
 
     input.click();
 }
-    </script>
-</head>
+</script>
+
+  </head>
   <body>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=800 height=600 tabindex="-1"></canvas>
